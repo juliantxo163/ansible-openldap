@@ -1,0 +1,48 @@
+- name: Stop slapd service
+  service:
+    name: slapd
+    state: stopped
+  ignore_errors: yes
+
+- name: remove openldap-servers
+  yum:
+    name: openldap-servers*
+    state: absent
+    autoremove: true
+  become: true
+  ignore_errors: yes
+
+- name: remove openldap client
+  yum:
+    name: openldap-client*
+    state: absent
+    autoremove: true
+  become: true
+  ignore_errors: yes
+
+- name: Remove etc openldap
+  file:
+    state: absent
+    path: "/etc/openldap/"
+
+- name: Remove USR openldap files
+  file:
+    state: absent
+    path: "/usr/share/openldap-servers/"
+
+- name: Remove var/lib
+  file:
+    state: absent
+    path: "/var/lib/ldap/"
+
+
+- name: yum clean
+  shell: yum clean all
+  tags: [ 'never', 'remove_repo' ]
+
+- name: Remove cache yum
+  file:
+    state: absent
+    path: "/var/cache/yum"
+  tags: [ 'never', 'remove_repo' ]
+

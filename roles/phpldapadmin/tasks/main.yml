@@ -1,0 +1,39 @@
+- name: Install packages needed (PHP, HTTPD, PHP-LDAP)
+  package:
+    name:
+      - httpd
+      - php
+      - php-ldap
+    state: installed
+
+- name: Download phpLDAPadmin and move to /usr/share/phpldapadmin
+  unarchive:
+    src: https://sirepo.s3-eu-west-1.amazonaws.com/phpldapadmin.zip
+    dest: /home/julian/Descargas
+    remote_src: yes
+    owner: "apache"
+    group: "apache"
+
+- name: Create config file phpldapadmin
+  copy:
+    src: /home/julian/Descargas/phpLDAPadmin-master/config/config.php.example
+    dest: /home/julian/Descargas/phpLDAPadmin-master/config/config.php
+    owner: "apache"
+    group: "apache"
+
+- name: Create phpdlapadmin.conf en httpd
+  copy:
+    src: ./files/phpldapadmin.conf
+    dest: /etc/httpd/conf.d/phpldapadmin.conf.ansible
+    owner: "apache"
+    group: "apache"
+
+
+
+- name: Ensure the default Apache port is 8080
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf.ansible
+    regexp: '^Listen '
+    insertafter: '^#Listen '
+    line: Listen 8080
+   

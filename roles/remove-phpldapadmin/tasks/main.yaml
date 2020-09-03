@@ -1,0 +1,26 @@
+- name: Stop httpd service
+  service:
+    name: httpd
+    state: stopped
+  ignore_errors: yes
+
+- name: Remove packages installed (PHP, HTTPD, PHP-LDAP)
+  package:
+    name:
+      - httpd
+      - php
+      - php-ldap
+    state: absent
+    autoremove: true
+
+- name: Remove /usr/share/phpldapadmin
+  file:
+    state: absent
+    path: "/usr/share/phpldapadmin/"
+
+- name: Remove /etc/httpd
+  file:
+    state: absent
+    path: "/etc/httpd/"
+
+  

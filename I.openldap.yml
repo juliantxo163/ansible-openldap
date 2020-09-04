@@ -2,4 +2,7 @@
 - hosts: localhost
   connection: local
   roles:
-    - { role: openldap-server, openldap_server_domain_name: onuris-ldap-nonprod.com, openldap_server_rootpw: changeit }
+    - { role: openldap-server, openldap_server_domain_name: onuris-ldap-nonprod.com, openldap_server_rootpw: changeit, openldap_server_enable_ssl: true}
+
+        
+     

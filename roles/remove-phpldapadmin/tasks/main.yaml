@@ -4,12 +4,13 @@
     state: stopped
   ignore_errors: yes
 
-- name: Remove packages installed (PHP, HTTPD, PHP-LDAP)
+- name: Remove packages installed (PHP, HTTPD, PHP-LDAP, MOD_SSL)
   package:
     name:
       - httpd
       - php
       - php-ldap
+      - mod_ssl
     state: absent
     autoremove: true
 

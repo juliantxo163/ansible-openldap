@@ -1,9 +1,11 @@
-- name: Install packages needed (PHP, HTTPD, PHP-LDAP)
+- name: Install packages needed (PHP, HTTPD, PHP-LDAP, MOD_SSL)
   yum:
     name:
       - httpd
       - php
       - php-ldap
+      - mod_ssl
+      
     state: installed
 
 - name: Download phpLDAPadmin from Sirepo and move to /usr/share/phpldapadmin

@@ -37,6 +37,34 @@
     insertafter: '^#Listen '
     line: Listen 8080
 
+- name: Enable HTTPD SSL (server.pem)
+  lineinfile:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: 'SSLCertificateFile /etc/pki/tls/certs/localhost.crt'
+    #insertafter: 'SSLCertificateFile'
+    line: SSLCertificateFile {{ certs_path }}/server.pem
+
+- name: Enable HTTPD SSL certs (server_key2.pem)
+  lineinfile:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: 'SSLCertificateKeyFile /etc/pki/tls/private/localhost.key'
+    #insertafter: 'SSLCertificateKeyFile'
+    line: SSLCertificateKeyFile {{ certs_path }}/server_key2.pem
+
+- name: Enable HTTPD SSL certs (ca.pem)
+  lineinfile:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: '#SSLCertificateChainFile'
+    #insertafter: '#SSLCertificateChainFile'
+    line: SSLCertificateChainFile /home/julian/certs/ldap-cert/ca.pem
+
+- name: Enable Virtual Host on port 8080
+  lineinfile:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: '<VirtualHost _default_:443>'
+    #insertafter: '<VirtualHost _default_:443>'
+    line: <VirtualHost _default_:8080>
+
 - name: Enable service httpd, and start it
   service:
     name: httpd

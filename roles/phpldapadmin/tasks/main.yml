@@ -56,7 +56,7 @@
     path: /etc/httpd/conf.d/ssl.conf
     regexp: '#SSLCertificateChainFile'
     #insertafter: '#SSLCertificateChainFile'
-    line: SSLCertificateChainFile /home/julian/certs/ldap-cert/ca.pem
+    line: SSLCertificateChainFile {{ certs_path }}/ca.pem
 
 - name: Enable Virtual Host on port 8080
   lineinfile:

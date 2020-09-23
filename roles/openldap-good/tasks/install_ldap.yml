@@ -1,0 +1,24 @@
+#- name: Install packages needed (openldap-clients, openldap-servers)
+#  yum:
+#    name:
+#      - openldap-servers
+#      - openldap-clients
+#
+#- name: Reinstall openldap-clients, openldap-servers, openldap (BUG)
+#  shell: yum reinstall openldap openldap-servers openldap-clients -y
+  
+#- name: Copy DB config Files
+#  copy:
+#    src: /usr/share/openldap-servers/DB_CONFIG.example
+#    dest: /var/lib/ldap/DB_CONFIG
+#    owner: "ldap"
+#    group: "ldap"
+
+
+- name: Create tmp directory for lddif files
+  file:
+    path: "{{ openldap_tmp_files_ldif }}"
+    state: directory
+
+- name: start the slapd service
+  service: name=slapd state=started enabled=yes 

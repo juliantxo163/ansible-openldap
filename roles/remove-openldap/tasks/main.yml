@@ -35,10 +35,10 @@
     state: absent
     path: "/var/lib/ldap/"
 
-
-- name: yum clean
-  shell: yum clean all
-  tags: [ 'never', 'remove_repo' ]
+- name: Remove tmp files 
+  file:
+    state: absent
+    path: "/tmp/ansible-pruebas/"
 
 - name: Remove cache yum
   file:

@@ -1,1 +1,21 @@
-- name: 
+- name: Add varibles
+  include_vars: main.yml
+
+
+- name: Generate mod_syncprov file
+  template: src=Generate mod_syncprov.j2 dest={{ openldap_tmp_files_ldif }}/Generate mod_syncprov.ldif
+
+- name: Add mod_syncprov to ldap
+  shell: ldapadd -Y EXTERNAL -H ldapi:/// -f {{ openldap_tmp_files_ldif }}/mod_syncprov.ldif
+
+- name: Generate syncprov file
+  template: src=Generate syncprov.j2 dest={{ openldap_tmp_files_ldif }}/Generate syncprov.ldif
+
+- name: Add mod_syncprov to ldap
+  shell: ldapadd -Y EXTERNAL -H ldapi:/// -f {{ openldap_tmp_files_ldif }}/syncprov.ldif
+
+- name: Generate ldap01 file
+  template: src=Generate ldap01.j2 dest={{ openldap_tmp_files_ldif }}/Generate ldap01.ldif
+
+- name: Add mod_syncprov to ldap
+  shell: ldapadd -Y EXTERNAL -H ldapi:/// -f {{ openldap_tmp_files_ldif }}/ldap_server.ldif

@@ -3,6 +3,7 @@
     name: slapd
     state: stopped
   ignore_errors: yes
+  become: true
 
 - name: remove openldap-servers
   yum:
@@ -24,25 +25,27 @@
   file:
     state: absent
     path: "/etc/openldap/"
+  become: true
 
 - name: Remove USR openldap files
   file:
     state: absent
     path: "/usr/share/openldap-servers/"
+  become: true
 
 - name: Remove var/lib
   file:
     state: absent
     path: "/var/lib/ldap/"
+  become: true
 
-- name: Remove tmp files 
+- name: Remove tmp files
   file:
     state: absent
     path: "/tmp/ansible-pruebas/"
-
+  become: true
 - name: Remove cache yum
   file:
     state: absent
     path: "/var/cache/yum"
   tags: [ 'never', 'remove_repo' ]
-

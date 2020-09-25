@@ -3,22 +3,39 @@
     name:
       - openldap-servers
       - openldap-clients
+  become: true
 
 - name: Reinstall openldap-clients, openldap-servers, openldap (BUG)
   shell: yum reinstall openldap openldap-servers openldap-clients -y
- 
+  become: true
+
 - name: Copy DB config Files
   copy:
     src: /usr/share/openldap-servers/DB_CONFIG.example
     dest: /var/lib/ldap/DB_CONFIG
+    remote_src: yes
     owner: "ldap"
     group: "ldap"
+  become: true
 
 
+- name: Change file ownership certs to ldap user
+  file:
+    path: /etc/openldap/certs/
+    state: directory
+    recurse: yes
+    owner: "ldap"
+    group: "ldap"
+  become: true
+    
 - name: Create tmp directory for lddif files
   file:
     path: "{{ openldap_tmp_files_ldif }}"
     state: directory
+    owner: "ansibleins"
+    group: "ansible"
+  become: true
 
 - name: Start the slapd service
-  service: name=slapd state=started enabled=yes 
+  service: name=slapd state=started enabled=yes
+  become: true

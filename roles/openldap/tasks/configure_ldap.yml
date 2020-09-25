@@ -2,12 +2,15 @@
 - name: Generate the root password for ldap
   shell: slappasswd -s {{ openldap_server_rootpw }} 
   register: root_password
+  become: true
 
 - name: Generate chrootpw file
   template: src=chrootpw.j2 dest={{ openldap_tmp_files_ldif }}/chrootpw.ldif
-
+  become: true
+  
 - name: Add chrootpw to ldap
   shell: ldapadd -Y EXTERNAL -H ldapi:/// -f {{ openldap_tmp_files_ldif }}/chrootpw.ldif
+  become: true
 
 - name: Add schema cosine
   shell: ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/cosine.ldif

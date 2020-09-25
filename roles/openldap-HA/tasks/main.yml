@@ -5,10 +5,10 @@
 - name: Generate mod_syncprov file
   template: src=Generate mod_syncprov.j2 dest={{ openldap_tmp_files_ldif }}/Generate mod_syncprov.ldif
 
-- name: Add mod_syncprov to ldap
-  shell: ldapadd -Y EXTERNAL -H ldapi:/// -f {{ openldap_tmp_files_ldif }}/mod_syncprov.ldif
+#- name: Add mod_syncprov to ldap
+#  shell: ldapadd -Y EXTERNAL -H ldapi:/// -f {{ openldap_tmp_files_ldif }}/mod_syncprov.ldif
 
-- name: Generate syncprov file
+#- name: Generate syncprov file
   template: src=Generate syncprov.j2 dest={{ openldap_tmp_files_ldif }}/Generate syncprov.ldif
 
 - name: Add mod_syncprov to ldap

@@ -3,5 +3,5 @@
   template: src=certs.j2 dest={{ openldap_tmp_files_ldif }}/certs.ldif
 
 - name: Add certs.ldif to ldap
-  shell: ldapadd -x -D cn=Manager,dc={{ openldap_server_domain_name.split('.')[0] }},dc={{ openldap_server_domain_name.split('.')[1] }} -w {{ openldap_server_rootpw }} -f {{ openldap_tmp_files_ldif }}/certs.ldif
-  
+  shell: ldapmodify -Y EXTERNAL -H ldapi:/// -f {{ openldap_tmp_files_ldif }}/
+  become: true

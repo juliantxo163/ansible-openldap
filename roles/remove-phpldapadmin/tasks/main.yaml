@@ -3,6 +3,7 @@
     name: httpd
     state: stopped
   ignore_errors: yes
+  become: true
 
 - name: Remove packages installed (PHP, HTTPD, PHP-LDAP, MOD_SSL)
   package:
@@ -13,15 +14,18 @@
       - mod_ssl
     state: absent
     autoremove: true
+  become: true
 
 - name: Remove /usr/share/phpldapadmin
   file:
     state: absent
     path: "/usr/share/phpldapadmin/"
+  become: true
 
 - name: Remove /etc/httpd
   file:
     state: absent
     path: "/etc/httpd/"
+  become: true
 
   

@@ -1,5 +1,4 @@
   
-- hosts: localhost
-  connection: local
+- hosts: ldap
   roles:
     - { role: remove-phpldapadmin }

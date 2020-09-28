@@ -1,5 +1,4 @@
   
-- hosts: localhost
-  connection: local
+- hosts: ldap
   roles:
-    - { role: openldap-good, openldap_server_domain_name: onuris-ldap.com, openldap_server_rootpw: changeit}
+    - { role: openldap, openldap_server_domain_name: onuris-ldap.com, openldap_server_rootpw: changeit}

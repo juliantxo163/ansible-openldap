@@ -7,12 +7,12 @@
       - mod_ssl
       
     state: installed
+  become: true
 
-- name: Download phpLDAPadmin from Sirepo and move to /usr/share/phpldapadmin
+- name: Unzip phpldapadmin in /usr/share path
   unarchive:
-    src: https://sirepo.s3-eu-west-1.amazonaws.com/phpldapadmin.zip
+    src: ./files/phpldapadmin.zip
     dest: /usr/share/
-    remote_src: yes
     owner: "apache"
     group: "apache"
 
@@ -70,4 +70,4 @@
     name: httpd
     state: started
     enabled: yes
-   
+  become: true

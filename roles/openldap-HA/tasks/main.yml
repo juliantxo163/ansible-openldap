@@ -1,21 +1,29 @@
 - name: Add varibles
   include_vars: main.yml
 
-
 - name: Generate mod_syncprov file
-  template: src=Generate mod_syncprov.j2 dest={{ openldap_tmp_files_ldif }}/Generate mod_syncprov.ldif
+  template: src=mod_syncprov.j2 dest={{ openldap_tmp_files_ldif }}/mod_syncprov.ldif
 
-#- name: Add mod_syncprov to ldap
-#  shell: ldapadd -Y EXTERNAL -H ldapi:/// -f {{ openldap_tmp_files_ldif }}/mod_syncprov.ldif
+- name: Add mod_syncprov to ldap
+  shell: ldapadd -Y EXTERNAL -H ldapi:/// -f {{ openldap_tmp_files_ldif }}/mod_syncprov.ldif
+  become: true
 
-#- name: Generate syncprov file
-  template: src=Generate syncprov.j2 dest={{ openldap_tmp_files_ldif }}/Generate syncprov.ldif
+- name: Generate syncprov file
+  template: src=syncprov.j2 dest={{ openldap_tmp_files_ldif }}/syncprov.ldif
 
 - name: Add mod_syncprov to ldap
   shell: ldapadd -Y EXTERNAL -H ldapi:/// -f {{ openldap_tmp_files_ldif }}/syncprov.ldif
+  become: true
 
-- name: Generate ldap01 file
-  template: src=Generate ldap01.j2 dest={{ openldap_tmp_files_ldif }}/Generate ldap01.ldif
+- name: Generate ldap_server file
+  template: src=ldap_server.j2 dest={{ openldap_tmp_files_ldif }}/ldap_server.ldif
 
 - name: Add mod_syncprov to ldap
   shell: ldapadd -Y EXTERNAL -H ldapi:/// -f {{ openldap_tmp_files_ldif }}/ldap_server.ldif
+  become: true
+
+- name: Remove tmp files
+  file:
+    state: absent
+    path: "{{ openldap_tmp_files_ldif }}"
+  become: true

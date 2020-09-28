@@ -1,6 +1,6 @@
 - name: Add varibles
   include_vars: main.yml
 
-#- include: install_ldap.yml
-#- include: configure_ldap.yml
+- include: install_ldap.yml
+- include: configure_ldap.yml
 - include: set_certs.yml

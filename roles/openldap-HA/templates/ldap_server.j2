@@ -1,13 +1,13 @@
 dn: cn=config
 changetype: modify
 replace: olcServerID
-olcServerID: 1
+olcServerID: {{ repl_id }}
 
 dn: olcDatabase={2}hdb,cn=config
 changetype: modify
 add: olcSyncRepl
 olcSyncRepl: rid=001
-  provider=ldap://{{ ldap_server_fqdn}}:389/
+  provider=ldap://{{ ldap_provider }}:389/
   bindmethod=simple
   binddn="cn=Manager,dc={{ openldap_server_domain_name.split('.')[0] }},dc={{ openldap_server_domain_name.split('.')[1] }}"
   credentials={{ openldap_server_rootpw }}
@@ -17,6 +17,10 @@ olcSyncRepl: rid=001
   type=refreshAndPersist
   retry="30 5 300 3"
   interval=00:00:05:00
+  starttls=yes
+  tls_cert={{ openldap_certificates_path }}/server.pem
+  tls_key={{ openldap_certificates_path }}/server_key2.pem
+  tls_cacert={{ openldap_certificates_path }}/ca.pem
 -
 add: olcMirrorMode
 olcMirrorMode: TRUE

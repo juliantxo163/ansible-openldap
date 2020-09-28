@@ -15,13 +15,16 @@
     dest: /usr/share/
     owner: "apache"
     group: "apache"
+  become: true
 
 - name: Create config file phpldapadmin
   copy:
     src: /usr/share/phpldapadmin/config/config.php.example
     dest: /usr/share/phpldapadmin/config/config.php
+    remote_src: yes
     owner: "apache"
     group: "apache"
+  become: true
 
 - name: Create phpdlapadmin.conf en httpd
   copy:
@@ -29,41 +32,65 @@
     dest: /etc/httpd/conf.d/phpldapadmin.conf
     owner: "apache"
     group: "apache"
-
-- name: Ensure the default Apache port is 8080
-  lineinfile:
-    path: /etc/httpd/conf/httpd.conf
-    regexp: '^Listen '
-    insertafter: '^#Listen '
-    line: Listen 8080
+  become: true
 
 - name: Enable HTTPD SSL (server.pem)
   lineinfile:
     path: /etc/httpd/conf.d/ssl.conf
     regexp: 'SSLCertificateFile /etc/pki/tls/certs/localhost.crt'
-    #insertafter: 'SSLCertificateFile'
     line: SSLCertificateFile {{ certs_path }}/server.pem
+  become: true
+
 
 - name: Enable HTTPD SSL certs (server_key2.pem)
   lineinfile:
     path: /etc/httpd/conf.d/ssl.conf
     regexp: 'SSLCertificateKeyFile /etc/pki/tls/private/localhost.key'
-    #insertafter: 'SSLCertificateKeyFile'
     line: SSLCertificateKeyFile {{ certs_path }}/server_key2.pem
+  become: true
 
 - name: Enable HTTPD SSL certs (ca.pem)
   lineinfile:
     path: /etc/httpd/conf.d/ssl.conf
     regexp: '#SSLCertificateChainFile'
-    #insertafter: '#SSLCertificateChainFile'
     line: SSLCertificateChainFile {{ certs_path }}/ca.pem
+  become: true
 
 - name: Enable Virtual Host on port 8080
   lineinfile:
     path: /etc/httpd/conf.d/ssl.conf
     regexp: '<VirtualHost _default_:443>'
-    #insertafter: '<VirtualHost _default_:443>'
     line: <VirtualHost _default_:8080>
+  become: true
+
+- name: Ensure the SSL Apache port is 8080
+  lineinfile:
+    path: /etc/httpd/conf.d/ssl.conf
+    regexp: '^Listen '
+    line: Listen 8080
+  become: true
+
+- name: Edit hostname in httpd.cnf
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '#ServerName www.example.com:80'
+    line: ServerName {{ inventory_hostname }}:8080
+  become: true
+
+- name: Edit Directory index.php in httpd.conf
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: 'DirectoryIndex index.html'
+    line: DirectoryIndex index.html index.php
+  become: true
+
+- name: Edit AddType application/x-httpd-php 
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '#AddType application/x-gzip .tgz'
+    line: AddType application/x-httpd-php .php
+  become: true
+
 
 - name: Enable service httpd, and start it
   service:
@@ -71,3 +98,5 @@
     state: started
     enabled: yes
   become: true
+
+

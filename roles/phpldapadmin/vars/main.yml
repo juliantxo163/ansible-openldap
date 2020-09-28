@@ -1,1 +1,2 @@
-certs_path: "/data/certs/ldap_cert"
+certs_path: "/data/certs"
+openldap_certificates_path: "data/certs"

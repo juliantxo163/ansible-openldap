@@ -1,0 +1,3 @@
+- hosts: ldap
+  roles:
+    - { role: openldap-HA, openldap_server_domain_name: onuris-ldap.com, openldap_server_rootpw: changeit}

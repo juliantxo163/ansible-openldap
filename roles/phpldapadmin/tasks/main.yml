@@ -67,7 +67,7 @@
   lineinfile:
     path: /etc/httpd/conf.d/ssl.conf
     regexp: '^Listen '
-    line: Listen 8080
+    line: Listen 0.0.0.0:8080 https
   become: true
 
 - name: Edit hostname in httpd.cnf
